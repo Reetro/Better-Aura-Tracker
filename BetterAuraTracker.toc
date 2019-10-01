@@ -1,0 +1,9 @@
+## Interface: 11302
+## Title: |cff00ccffBetter Aura Tracker|r
+## Author: Reetro
+## DefaultState: enabled
+## SavedVariables: BetterAuraTrackerDB
+
+config.lua
+timer.lua
+init.lua
