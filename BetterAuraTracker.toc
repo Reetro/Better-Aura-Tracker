@@ -1,9 +1,27 @@
 ## Interface: 11302
 ## Title: |cff00ccffBetter Aura Tracker|r
 ## Author: Reetro
+## Notes: A more customizable Aura frame
 ## DefaultState: enabled
 ## SavedVariables: BetterAuraTrackerDB
 
+
+CallbackHandler-1.0.lua
+AceAddon-3.0.lua
+AceDB-3.0.lua
+AceDBOptions-3.0.lua
+AceGUIContainer-AuraFramesWindow
+AceConfig-3.0.lua
+AceConfigCmd-3.0.lua
+AceGUI-3.0.lua
+AceGUIContainer-DropDownGroup.lua
+AceGUIWidget-Button.lua
+AceGUIWidget-Icon.lua
+AceHook-3.0.lua
+LibDataBroker-1.1.lua
+LibDBIcon-1.0-lua
+LibStub.lua
+LibSharedMedia-3.0.lua
 config.lua
 timer.lua
 init.lua
