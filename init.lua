@@ -1,3 +1,10 @@
+---------------------------
+-- Ace 3 Setup
+---------------------------
+
+BetterAuraTracker = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTracker")
+BetterAuraTrackerConsole = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTrackerConsole", "AceConsole-3.0")
+
 local _, core = ...; -- Namespace
 
 function core:Print(...)
@@ -5,6 +12,7 @@ function core:Print(...)
     local prefix = string.format("|cff%s%s|r", hex:upper(), "Better Aura Tracker:");	
     DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
+
 core.commands = {
 	["config"] = core.Config.Toggle, -- this is a function (no knowledge of Config object)
 	
@@ -16,6 +24,7 @@ core.commands = {
 		print(" ");
 	end
 };
+
 local function HandelSlashCommands(str)
 
  if (#str == 0) then	
@@ -59,10 +68,11 @@ SLASH_BAT1 = "/bat"
 SlashCmdList["BAT"] = HandelSlashCommands;
 
 local function startup(self, event, arg2, ...)
-	core:Print("Welcome back", UnitName("player").."! To bring up options use /bat config");
+	core:Print("Welcome", UnitName("player").."! To bring up options use /bat config");
 end
 
 
-local frame = CreateFrame("Frame")
-frame:RegisterEvent("PLAYER_LOGIN")
-frame:SetScript("OnEvent", startup)
+function BetterAuraTracker:OnEnable()
+	-- Called when the addon is enabled
+	startup()
+end

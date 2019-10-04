@@ -8,7 +8,7 @@ local Config = core.Config;
 local UIConfig;
 
 --------------------------------------
--- Defaults (usually a database!)
+-- Defaults 
 --------------------------------------
 local defaults = {
 	theme = {
@@ -101,4 +101,3 @@ function Config:CreateMenu()
 	UIConfig:Hide();
 	return UIConfig;
 end
-
