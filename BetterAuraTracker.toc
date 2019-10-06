@@ -8,5 +8,5 @@
 
 embeds.xml
 config.lua
-timer.lua
+aura.lua
 init.lua
