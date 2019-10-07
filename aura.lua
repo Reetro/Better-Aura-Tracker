@@ -1,13 +1,5 @@
 local A, L = ...
 
-function ConvertSpellNameToID(name)
-	for i = 1, 100000 do
-		if name == GetSpellInfo(i) then
-			return i
-		end
-	end
-end
-
 function CreateBuffFrame()
   local buffFrameConfig = {
     framePoint      = { "TOPRIGHT", Minimap, "TOPLEFT", -5, -5 },
@@ -18,7 +10,7 @@ function CreateBuffFrame()
     buttonMargin    = 5,
     numCols         = 10,
     startPoint      = "TOPRIGHT",
-    --rowMargin       = 20,
+    rowMargin       = 20,
   }
 
   rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
@@ -28,15 +20,36 @@ end
 
 
 function CreateDebuffFrame()
+
+  local debuffFrameConfig = {
+    framePoint      = { "TOPRIGHT", buffFrame, "BOTTOMRIGHT", 0, -5 },
+    frameScale      = 1,
+    framePadding    = 5,
+    buttonWidth     = 40,
+    buttonHeight    = 40,
+    buttonMargin    = 5,
+    numCols         = 8,
+    startPoint      = "TOPRIGHT",
+  }
   
+  rBuffFrame:CreateDebuffFrame(A, debuffFrameConfig)
+
 end 
 
-function SetAura()
+function SetBuff()
   for i=1,40 do
     local name, icon, _, _, _, etime = UnitBuff("player",i)
-    local id = ConvertSpellNameToID(name)
     if name then
       CreateBuffFrame()    
+    end
+  end
+end
+
+function SetDebuff()
+  for i=1,40 do
+    local name, icon, _, _, _, etime = UnitDebuff("player",i)
+    if name then
+      CreateDebuffFrame()
     end
   end
 end
@@ -44,5 +57,4 @@ end
 
 local frame = CreateFrame("FRAME", "AuraFrame");
 frame:RegisterEvent("UNIT_AURA");
-frame:SetScript("OnEvent", SetAura);
-
+frame:SetScript("OnEvent", SetBuff, SetDebuff);

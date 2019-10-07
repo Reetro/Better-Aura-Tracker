@@ -91,7 +91,6 @@ function getAura()
 
 	for i=1,40 do
 		local name, icon, _, _, _, etime = UnitBuff("player",i)
-		local id = ConvertSpellNameToID(name)
 		if name then
 			rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
   		end
