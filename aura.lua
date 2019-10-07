@@ -1,4 +1,7 @@
 local A, L = ...
+local _, core = ...;
+core.Aura = {}
+local Aura = core.Aura
 
 function CreateBuffFrame()
   local buffFrameConfig = {
@@ -14,13 +17,11 @@ function CreateBuffFrame()
   }
 
   rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
-  
-
+ 
 end
 
 
 function CreateDebuffFrame()
-
   local debuffFrameConfig = {
     framePoint      = { "TOPRIGHT", buffFrame, "BOTTOMRIGHT", 0, -5 },
     frameScale      = 1,
@@ -36,25 +37,21 @@ function CreateDebuffFrame()
 
 end 
 
-function SetBuff()
+function Aura:getAura()
   for i=1,40 do
     local name, icon, _, _, _, etime = UnitBuff("player",i)
     if name then
       CreateBuffFrame()    
     end
   end
-end
-
-function SetDebuff()
   for i=1,40 do
     local name, icon, _, _, _, etime = UnitDebuff("player",i)
     if name then
       CreateDebuffFrame()
     end
-  end
+  end 
 end
-
 
 local frame = CreateFrame("FRAME", "AuraFrame");
 frame:RegisterEvent("UNIT_AURA");
-frame:SetScript("OnEvent", SetBuff, SetDebuff);
+frame:SetScript("OnEvent", getAura);
