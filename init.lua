@@ -16,49 +16,7 @@ function core:Print(...)
     DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
 
-local function HandelSlashCommands(str)
-
- if (#str == 0) then	
-		-- User just entered "/bat" with no additional args.
-		core.commands.help();
-		return;		
-	end	
-	
-	local args = {};
-	for _, arg in ipairs({ string.split(' ', str) }) do
-		if (#arg > 0) then
-			table.insert(args, arg);
-		end
-	end
-	
-	local path = core.commands; -- required for updating found table.
-	
-	for id, arg in ipairs(args) do
-		if (#arg > 0) then -- if string length is greater than 0.
-			arg = arg:lower();			
-			if (path[arg]) then
-				if (type(path[arg]) == "function") then				
-					-- all remaining args passed to our function!
-					path[arg](select(id + 1, unpack(args))); 
-					return;					
-				elseif (type(path[arg]) == "table") then				
-					path = path[arg]; -- another sub-table found!
-				end
-			else
-				-- does not exist!
-				core.commands.help();
-				return;
-			end
-		end
-	end
-
-end
-
-
-SLASH_BAT1 = "/bat"
-SlashCmdList["BAT"] = HandelSlashCommands;
-
-
+-- TODO figure out why minimap icons don't appear on login
 local function startup(self, event, arg2, ...)
 	getAura()
 	core.Config.CreateMenu()
