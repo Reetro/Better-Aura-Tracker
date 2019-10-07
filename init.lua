@@ -5,6 +5,9 @@
 BetterAuraTracker = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTracker")
 BetterAuraTrackerConsole = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTrackerConsole", "AceConsole-3.0")
 
+local A, L = ...
+
+
 local _, core = ...; -- Namespace
 
 function core:Print(...)
@@ -69,6 +72,31 @@ SlashCmdList["BAT"] = HandelSlashCommands;
 
 local function startup(self, event, arg2, ...)
 	core:Print("Welcome", UnitName("player").."! To bring up options use /bat config");
+	getAura()
+end
+
+function getAura()
+
+	local buffFrameConfig = {
+		framePoint      = { "TOPRIGHT", Minimap, "TOPLEFT", -5, -5 },
+		frameScale      = 1,
+		framePadding    = 5,
+		buttonWidth     = 32,
+		buttonHeight    = 32,
+		buttonMargin    = 5,
+		numCols         = 10,
+		startPoint      = "TOPRIGHT",
+		--rowMargin       = 20,
+	  }
+
+	for i=1,40 do
+		local name, icon, _, _, _, etime = UnitBuff("player",i)
+		local id = ConvertSpellNameToID(name)
+		if name then
+			rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
+  		end
+	  end
+
 end
 
 
