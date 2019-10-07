@@ -16,22 +16,10 @@ function core:Print(...)
     DEFAULT_CHAT_FRAME:AddMessage(string.join(" ", prefix, ...));
 end
 
-core.commands = {
-	["config"] = core.Config.Toggle, -- this is a function (no knowledge of Config object)
-	
-	["help"] = function()
-		print(" ");
-		core:Print("List of slash commands:")
-		core:Print("|cff00cc66/bat config|r - shows config menu");
-		core:Print("|cff00cc66/bat help|r - shows help info");
-		print(" ");
-	end
-};
-
 local function HandelSlashCommands(str)
 
  if (#str == 0) then	
-		-- User just entered "/at" with no additional args.
+		-- User just entered "/bat" with no additional args.
 		core.commands.help();
 		return;		
 	end	
@@ -70,9 +58,10 @@ end
 SLASH_BAT1 = "/bat"
 SlashCmdList["BAT"] = HandelSlashCommands;
 
+
 local function startup(self, event, arg2, ...)
-	core:Print("Welcome", UnitName("player").."! To bring up options use /bat config");
 	getAura()
+	core.Config.CreateMenu()
 end
 
 function getAura()
@@ -96,8 +85,27 @@ function getAura()
   		end
 	  end
 
-end
+	local debuffFrameConfig = {
+		  framePoint      = { "TOPRIGHT", buffFrame, "BOTTOMRIGHT", 0, -5 },
+		  frameScale      = 1,
+		  framePadding    = 5,
+		  buttonWidth     = 40,
+		  buttonHeight    = 40,
+		  buttonMargin    = 5,
+		  numCols         = 8,
+		  startPoint      = "TOPRIGHT",
+		}
+		function SetDebuff()
+			for i=1,40 do
+			  local name, icon, _, _, _, etime = UnitDebuff("player",i)
+			  if name then
+				rBuffFrame:CreateDebuffFrame(A, debuffFrameConfig)
+			end
+		end
+	  
+	  end 
 
+end
 
 function BetterAuraTracker:OnEnable()
 	-- Called when the addon is enabled

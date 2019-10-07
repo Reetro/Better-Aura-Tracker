@@ -19,85 +19,59 @@ local defaults = {
 	}
 }
 
+local A, L = ...
+
 --------------------------------------
 -- Config functions
 --------------------------------------
-function Config:Toggle()
-	local menu = UIConfig or Config:CreateMenu();
-	menu:SetShown(not menu:IsShown());
-end
 
 function Config:GetThemeColor()
 	local c = defaults.theme;
 	return c.r, c.g, c.b, c.hex;
 end
 
-function Config:CreateButton(point, relativeFrame, relativePoint, yOffset, text)
-	local btn = CreateFrame("Button", nil, UIConfig, "GameMenuButtonTemplate");
-	btn:SetPoint(point, relativeFrame, relativePoint, 0, yOffset);
-	btn:SetSize(140, 40);
+function AddText(frame, point, xoff,yoff,text,size)
+	local t = frame.panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+	t:SetPoint(point, xoff, yoff)
+	t:SetText(text)
+	t:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE, MONOCHROME")
+end
+
+function AddSubText(frame, point, xoff,yoff,text,size)
+	local t = frame.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+	t:SetPoint(point, xoff, yoff)
+	t:SetText(text)
+	t:SetFont("Fonts\\FRIZQT__.TTF", size, "OUTLINE, MONOCHROME")
+end
+
+function CreateButton(point, relativeFrame, relativePoint, xoffset, yOffset, width, height, text)
+	local btn = CreateFrame("Button", nil, relativeFrame, "GameMenuButtonTemplate");
+	btn:SetPoint(point, relativeFrame, relativePoint, xoffset, yOffset);
+	btn:SetSize(width, height);
 	btn:SetText(text);
 	btn:SetNormalFontObject("GameFontNormalLarge");
 	btn:SetHighlightFontObject("GameFontHighlightLarge");
 	return btn;
 end
 
-function Config:CreateSlider(point, relativeFrame, relativePoint, yOffset, startingValue, valueStep)
-	local s = CreateFrame("SLIDER", nil, UIConfig, "OptionsSliderTemplate");
-	s:SetPoint(point,relativeFrame,relativePoint,0,yOffset)
-	s:SetMinMaxValues(1, 100);
-	s:SetValue(startingValue)
-	s:SetValueStep(valueStep)
-	s:SetObeyStepOnDrag(true);
-	return s; 
-end
-
-function Config:CreateCheckBox(point, relativeFrame, relativePoint, xoffset, yOffset, text, checked)
-	local c = CreateFrame("CheckButton", nil, UIConfig, "UICheckButtonTemplate");
-	c:SetPoint(point, relativeFrame, relativePoint, xoffset, yOffset)
-	c.text:SetText(text)
-	c:SetChecked(checked);
-	return c; 
-end
 
 function Config:CreateMenu()
-	UIConfig = CreateFrame("Frame", "BetterAuraTrackerConfig", UIParent, "BasicFrameTemplateWithInset");
-	UIConfig:SetSize(260, 360);
-	UIConfig:SetPoint("CENTER"); -- Doesn't need to be ("CENTER", UIParent, "CENTER")
-
-	UIConfig.title = UIConfig:CreateFontString(nil, "OVERLAY", "GameFontHighlight");
-	UIConfig.title:SetPoint("LEFT", UIConfig.TitleBg, "LEFT", 5, 0);
-	UIConfig.title:SetText("Better Aura Tracker Options");
-
-	----------------------------------
-	-- Buttons
-	----------------------------------
-	-- Save Button:
-	UIConfig.saveBtn = self:CreateButton("CENTER", UIConfig, "TOP", -70, "Save");
-
-	-- Reset Button:	
-	UIConfig.resetBtn = self:CreateButton("TOP", UIConfig.saveBtn, "BOTTOM", -10, "Reset");
-
-	-- Load Button:	
-	UIConfig.loadBtn = self:CreateButton("TOP", UIConfig.resetBtn, "BOTTOM", -10, "Load");
-
-	----------------------------------
-	-- Sliders
-	----------------------------------
+	-- Register in the Interface Addon Options GUI	
+	BetterAuraTrackerPanel = {};
+	BetterAuraTrackerPanel.panel = CreateFrame( "Frame", "BetterAuraTrackerPanel", UIParent );
+	-- Title Text
+	local title = AddText(BetterAuraTrackerPanel, "TOPLEFT", 16, -16, "BetterAuraTracker Options", 30)
+	-- Unlock Button 
+	local Unlock = CreateButton("TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -60, 140, 50, "Unlock")
+	-- Reset Button 
+	-- Unlock Button 
+	local Unlock = CreateButton("TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -60, 140, 50, "Unlock")
 	
-	-- Slider 1:
-	UIConfig.slider1 = self:CreateSlider("TOP", UIConfig.loadBtn, "BOTTOM",-20, 50,30)
-	-- Slider 2:
-	UIConfig.slider2 = self:CreateSlider("TOP", UIConfig.slider1, "BOTTOM", -20, 40, 30)
-	----------------------------------
-	-- Check Buttons
-	----------------------------------
-	-- Check Button 1:
-	UIConfig.checkBtn1 = self:CreateCheckBox("TOPLEFT", UIConfig.slider1, "BOTTOMLEFT", -10, -40, "PH", false)
 
-	-- Check Button 2:
-	UIConfig.checkBtn2 = self:CreateCheckBox("TOPLEFT", UIConfig.checkBtn1, "BOTTOMLEFT", 0, -10, "PH", true)
-	
-	UIConfig:Hide();
-	return UIConfig;
+
+	-- Set the name for the Category for the Options Panel
+	BetterAuraTrackerPanel.panel.name = "BetterAuraTracker";
+
+	-- Add the panel to the Interface Options
+	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.panel);
 end
