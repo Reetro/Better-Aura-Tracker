@@ -18,4 +18,3 @@ timer.lua
 rBuffFrame.lua
 config.lua
 aura.lua
-init.lua
