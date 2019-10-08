@@ -1,6 +1,7 @@
 --------------------------------------
 -- Namespaces
 --------------------------------------
+local A, L = ...
 local _, core = ...;
 core.Config = {}; -- adds Config table to addon namespace
 
@@ -10,40 +11,42 @@ local UIConfig;
 --------------------------------------
 -- Saved Settings 
 --------------------------------------
-BetterAuraTrackerDB = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTrackerDB")
 
-local defaults = {
-	profile = {
-		buffButtonSize = 64,
-		buffFrameScale = 1
-	  }
+BetterAuraTrackerOptions = {
+ BuffButtonSize = 64,
+ BuffFrameScale = 1
 }
 
-function BetterAuraTrackerDB:OnInitialize()
-	self.db = LibStub("AceDB-3.0"):New("BetterAuraTrackerDB", defaults, true)
-end
-  
-function BetterAuraTrackerDB:OnEnable()
-if self.db.profile.optionA then
-    self.db.profile.playerName = UnitName("player")
-  end
-end
+local defualt = {
+ BuffButtonSize = 64,
+ BuffFrameScale = 1
+}
 
-local A, L = ...
 
 
 --------------------------------------
 -- Config functions
 --------------------------------------
 
+StaticPopupDialogs["ReloadUI Box"] = {
+	text = "Changing this value requires a reload to apply. Do you wish to reload now?",
+	button1 = "Yes",
+	button2 = "No",
+	OnAccept = function()
+		ReloadUI();
+	end,
+	timeout = 0,
+	whileDead = true,
+	hideOnEscape = true,
+	preferredIndex = 3, 
+  }
+
 function Config:GetBuffButtonSize()
-	local b = defaults.profile
-	return b.buffButtonSize
+	return BetterAuraTrackerOptions.BuffButtonSize
 end 
 
 function Config:GetBuffFrameScale()
-	local b = defaults.profile
-	return b.buffFrameScale
+	return BetterAuraTrackerOptions.BuffFrameScale
 end
 
 function AddText(frame, point, xoff,yoff,text,size)
@@ -105,7 +108,7 @@ function Config:CreateMenu()
 	-- Buff Sub Text 
 	BetterAuraTrackerPanel.panel.BuffSub = AddSubText(BetterAuraTrackerPanel, "TOPLEFT", 20, -180, "Buff Options", 18)
 	-- Buff Frame Scale Slider
-    BetterAuraTrackerPanel.panel.BuffFrameSlider = CreateSlider("BuffScaleSlider", "Buff Scale", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -240, 1, 10, 1, 1)
+    BetterAuraTrackerPanel.panel.BuffFrameSlider = CreateSlider("BuffScaleSlider", "Buff Scale", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -240, 1, 10, 1, Config:GetBuffFrameScale())
     local BuffSliderFrameText = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	BuffSliderFrameText:SetPoint("TOPLEFT", 90, -260)
 	BuffSliderFrameText:SetFont("Fonts\\MORPHEUS.ttf", 15)
@@ -113,11 +116,11 @@ function Config:CreateMenu()
 	BetterAuraTrackerPanel.panel.BuffFrameSlider:SetScript("OnValueChanged", function(self)
 		local value = self:GetValue()
 		BuffSliderFrameText:SetText(value)
-		defaults.profile.buffFrameScale = value
-		core.Aura.getAura()
+		BetterAuraTrackerOptions.BuffFrameScale = value
+		StaticPopup_Show ("ReloadUI Box")
 	end)
 	-- Buff Button Size Slider 
-	BetterAuraTrackerPanel.panel.ButtonSizeSlider = CreateSlider("BuffButtonSizeSlider", "Buff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -240, 32, 1024, 32, 32)
+	BetterAuraTrackerPanel.panel.ButtonSizeSlider = CreateSlider("BuffButtonSizeSlider", "Buff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -240, 32, 1024, 32, Config:GetBuffButtonSize())
     local BuffButtonSliderText = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	BuffButtonSliderText:SetPoint("TOPLEFT", 370, -260)
 	BuffButtonSliderText:SetFont("Fonts\\MORPHEUS.ttf", 15)
@@ -125,8 +128,8 @@ function Config:CreateMenu()
 	BetterAuraTrackerPanel.panel.ButtonSizeSlider:SetScript("OnValueChanged", function(self)
 		local value = self:GetValue()
 		BuffButtonSliderText:SetText(value)
-		defaults.profile.buffButtonSize = value
-		core.Aura.getAura()
+		BetterAuraTrackerOptions.BuffButtonSize = value
+		StaticPopup_Show ("ReloadUI Box")
 	end)
 	
 	-- Set the name for the Category for the Options Panel
