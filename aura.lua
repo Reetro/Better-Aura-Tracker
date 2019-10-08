@@ -2,6 +2,8 @@ local A, L = ...
 local _, core = ...;
 core.Aura = {}
 local Aura = core.Aura
+local buffFrame;
+local debuffFrame; 
 
 BetterAuraTracker = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTracker")
 
@@ -32,42 +34,28 @@ function CreateBuffFrame()
     rowMargin       = 20,
   }
 
-  rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
+  buffFrame = rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
  
 end
 
 
 function CreateDebuffFrame()
   local debuffFrameConfig = {
-    framePoint      = { "TOPRIGHT", buffFrame, "BOTTOMRIGHT", 0, -5 },
+    framePoint      = { "TOPRIGHT", Minimap, "TOPLEFT", -4, -100 },
     frameScale      = 1,
     framePadding    = 5,
-    buttonWidth     = 40,
-    buttonHeight    = 40,
+    buttonWidth     = 32,
+    buttonHeight    = 32,
     buttonMargin    = 5,
     numCols         = 8,
     startPoint      = "TOPRIGHT",
   }
   
-  rBuffFrame:CreateDebuffFrame(A, debuffFrameConfig)
+  debuffFrame = rBuffFrame:CreateDebuffFrame(A, debuffFrameConfig)
 
 end 
 
 function getAura()
-  for i=1,40 do
-    local name, icon, _, _, _, etime = UnitBuff("player",i)
-    if name then
-      CreateBuffFrame()    
-    end
-  end
-  for i=1,40 do
-    local name, icon, _, _, _, etime = UnitDebuff("player",i)
-    if name then
-      CreateDebuffFrame()
-    end
-  end 
+  CreateBuffFrame()
+  CreateDebuffFrame()
 end
-
-local frame = CreateFrame("FRAME", "AuraFrame");
-frame:RegisterEvent("UNIT_AURA");
-frame:SetScript("OnEvent", getAura);
