@@ -13,6 +13,8 @@ L.dragFrames      = {}
 L.addonColor      = "0000FFFF"
 L.addonShortcut   = "rbf"
 local _, core = ...;
+local buffoverlay; 
+local buffoverlayText;
 
 -----------------------------
 -- Hide Blizzard BuffFrame
@@ -124,12 +126,30 @@ function rBuffFrame:CreateBuffFrame(addonName,cfg)
   hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateAllBuffAnchors)
   --add drag functions
   rLib:CreateDragFrame(frame, L.dragFrames, -2, true)
+  buffoverlay = frame:CreateTexture(nil, "OVERLAY", nil, 6)
+  buffoverlay:SetPoint(unpack(cfg.framePoint))
+  buffoverlay:SetTexture(1.0, 0.0, 0.0)
+  buffoverlay:SetAlpha(0.5)
+  buffoverlay:SetAllPoints(frame)
+  buffoverlayText = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+  buffoverlayText:SetText("BuffFrame")
+  buffoverlayText:SetAllPoints(buffoverlay)
+  buffoverlayText:SetFont("Fonts\\ARIALN.ttf", 15, "OUTLINE")
+  buffoverlay:Hide()
+  buffoverlayText:Hide() 
   return frame
 end
 
-function rBuffFrame:UnlockfFrame(frame)
-  frame.texture:SetColorTexture(1.0, 0.0, 0.0, 0.5)
+function rBuffFrame:UnlockFrames()
+  buffoverlay:Show()
+  buffoverlayText:Show()
 end
+
+function rBuffFrame:LockFrames()
+  buffoverlay:Hide()
+  buffoverlayText:Hide()
+end
+
 
 function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   cfg.frameName = addonName.."DebuffFrame"
@@ -155,6 +175,6 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   end
   if relativeToName ~= addonName.."BuffFrame" then
     rLib:CreateDragFrame(frame, L.dragFrames, -2, true)
-  end
+  end  
   return frame
 end

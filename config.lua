@@ -27,21 +27,6 @@ BetterAuraTrackerSettings = {
 	ZoomDebuffs = false,
 }
 
-
-local defaults = {
-	BuffButtonSize = 64,
-	BuffButtonScale = 1,
-	BuffsPerRow = 10,
-	BuffPadding = 1,
-	DebuffButtonSize = 32,
-	DebuffButtonScale = 1,
-	DebuffsPerRow = 10,
-	DebuffPadding = 1,
-	ZoomBuffs = false,
-	ZoomDebuffs = false,
-}
-
-
 --------------------------------------
 -- Config functions
 --------------------------------------
