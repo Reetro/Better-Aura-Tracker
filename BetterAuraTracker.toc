@@ -3,7 +3,7 @@
 ## Author: Reetro
 ## Notes: A more customizable Aura frame
 ## DefaultState: enabled
-## SavedVariables: BetterAuraTrackerOptions
+## SavedVariables: BetterAuraTrackerSettings
 
 
 embeds.xml

@@ -16,6 +16,23 @@ function BetterAuraTracker:OnEnable()
   getAura()
 end
 
+function Aura:UnlockFrames()
+  buffFrame:SetMovable(true)
+  buffFrame:EnableMouse(true)
+  buffFrame:RegisterForDrag("LeftButton")
+  buffFrame:SetScript("OnDragStart", buffFrame.StartMoving)
+  buffFrame:SetScript("OnDragStop", buffFrame.StopMovingOrSizing)
+end
+
+function Aura:LockFrames()
+  buffFrame:SetMovable(false)
+  buffFrame:EnableMouse(false)
+end
+
+function Aura:ResetFrames()
+  buffFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -5, -5)
+end
+
 local startup = CreateFrame("FRAME", "startup");
 startup:RegisterEvent("PLAYER_LOGIN");
 startup:SetScript("OnEvent", getAura);
@@ -24,7 +41,7 @@ startup:SetScript("OnEvent", getAura);
 function CreateBuffFrame()
   local buffFrameConfig = {
     framePoint      = { "TOPRIGHT", Minimap, "TOPLEFT", -5, -5 },
-    frameScale      = core.Config:GetBuffFrameScale(),
+    frameScale      = core.Config.GetBuffFrameScale(),
     framePadding    = 5,
     buttonWidth     = core.Config:GetBuffButtonSize(),
     buttonHeight    = core.Config:GetBuffButtonSize(),

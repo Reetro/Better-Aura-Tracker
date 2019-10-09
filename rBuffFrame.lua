@@ -12,6 +12,7 @@ L.addonName       = A
 L.dragFrames      = {}
 L.addonColor      = "0000FFFF"
 L.addonShortcut   = "rbf"
+local _, core = ...;
 
 -----------------------------
 -- Hide Blizzard BuffFrame
@@ -124,6 +125,10 @@ function rBuffFrame:CreateBuffFrame(addonName,cfg)
   --add drag functions
   rLib:CreateDragFrame(frame, L.dragFrames, -2, true)
   return frame
+end
+
+function rBuffFrame:UnlockfFrame(frame)
+  frame.texture:SetColorTexture(1.0, 0.0, 0.0, 0.5)
 end
 
 function rBuffFrame:CreateDebuffFrame(addonName,cfg)

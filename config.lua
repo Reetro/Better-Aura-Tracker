@@ -12,16 +12,34 @@ local UIConfig;
 -- Saved Settings 
 --------------------------------------
 
-BetterAuraTrackerOptions = {
- BuffButtonSize = 64,
- BuffFrameScale = 1
+BetterAuraTrackerSettings = {
+	BuffframePostion = { "TOPRIGHT", Minimap, "TOPLEFT", -5, -5 },
+	BuffButtonSize = 64,
+	BuffButtonScale = 1,
+	BuffsPerRow = 10,
+	BuffPadding = 1,
+	DebuffPostion = { "TOPRIGHT", Minimap, "TOPLEFT", -4, -100 },
+	DebuffButtonSize = 32,
+	DebuffButtonScale = 1,
+	DebuffsPerRow = 10,
+	DebuffPadding = 1,
+	ZoomBuffs = false,
+	ZoomDebuffs = false,
 }
 
-local defualt = {
- BuffButtonSize = 64,
- BuffFrameScale = 1
-}
 
+local defaults = {
+	BuffButtonSize = 64,
+	BuffButtonScale = 1,
+	BuffsPerRow = 10,
+	BuffPadding = 1,
+	DebuffButtonSize = 32,
+	DebuffButtonScale = 1,
+	DebuffsPerRow = 10,
+	DebuffPadding = 1,
+	ZoomBuffs = false,
+	ZoomDebuffs = false,
+}
 
 
 --------------------------------------
@@ -42,11 +60,11 @@ StaticPopupDialogs["ReloadUI Box"] = {
   }
 
 function Config:GetBuffButtonSize()
-	return BetterAuraTrackerOptions.BuffButtonSize
+	return BetterAuraTrackerSettings.BuffButtonSize
 end 
 
 function Config:GetBuffFrameScale()
-	return BetterAuraTrackerOptions.BuffFrameScale
+	return BetterAuraTrackerSettings.BuffButtonScale
 end
 
 function AddText(frame, point, xoff,yoff,text,size)
@@ -101,10 +119,21 @@ function Config:CreateMenu()
 	BetterAuraTrackerPanel.panel.title = AddText(BetterAuraTrackerPanel, "TOPLEFT", 16, -16, "BetterAuraTracker Options", 30)
 	-- Unlock Button 
 	BetterAuraTrackerPanel.panel.Unlock = CreateButton("TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -60, 140, 40, "Unlock")
+	BetterAuraTrackerPanel.panel.Unlock:SetScript("OnClick", function(self, arg1)
+	core.Aura:UnlockFrames()
+	end)
 	-- Reset Button 
 	BetterAuraTrackerPanel.panel.Reset = CreateButton("TOP", BetterAuraTrackerPanel.panel.Unlock, "TOP", 150, 0, 140, 40, "Reset")
+	BetterAuraTrackerPanel.panel.Reset:SetScript("OnClick", function(self, arg1)
+	core.Aura:ResetFrames()
+	core.Aura:LockFrames()
+	end)
+		
 	-- Lock Button
 	BetterAuraTrackerPanel.panel.Lock = CreateButton("TOP", BetterAuraTrackerPanel.panel.Reset, "TOP", 150, 0, 140, 40, "Lock")
+	BetterAuraTrackerPanel.panel.Lock:SetScript("OnClick", function(self, arg1)
+	core.Aura:LockFrames()
+	end)
 	-- Buff Sub Text 
 	BetterAuraTrackerPanel.panel.BuffSub = AddSubText(BetterAuraTrackerPanel, "TOPLEFT", 20, -180, "Buff Options", 18)
 	-- Buff Frame Scale Slider
@@ -115,8 +144,8 @@ function Config:CreateMenu()
 	BuffSliderFrameText:SetText( BetterAuraTrackerPanel.panel.BuffFrameSlider:GetValue())
 	BetterAuraTrackerPanel.panel.BuffFrameSlider:SetScript("OnValueChanged", function(self)
 		local value = self:GetValue()
+		BetterAuraTrackerSettings.BuffButtonScale = value
 		BuffSliderFrameText:SetText(value)
-		BetterAuraTrackerOptions.BuffFrameScale = value
 		StaticPopup_Show ("ReloadUI Box")
 	end)
 	-- Buff Button Size Slider 
@@ -127,8 +156,8 @@ function Config:CreateMenu()
 	BuffButtonSliderText:SetText( BetterAuraTrackerPanel.panel.ButtonSizeSlider:GetValue())
 	BetterAuraTrackerPanel.panel.ButtonSizeSlider:SetScript("OnValueChanged", function(self)
 		local value = self:GetValue()
+		BetterAuraTrackerSettings.BuffButtonSize = value
 		BuffButtonSliderText:SetText(value)
-		BetterAuraTrackerOptions.BuffButtonSize = value
 		StaticPopup_Show ("ReloadUI Box")
 	end)
 	
