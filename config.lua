@@ -13,19 +13,17 @@ local UIConfig;
 --------------------------------------
 
 BetterAuraTrackerSettings = {
-	BuffframePostionX = -5,
+	BuffframePostionX = -200,
 	BuffframePostionY = -5,
-	BuffframeRealativeFrame = Minimap,
-	BuffframeRelativePoint = "TOPLEFT",
+	BuffframeRelativePoint = "TOPRIGHT",
 	BuffframePoint = "TOPRIGHT",
 	BuffButtonSize = 64,
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
 	BuffPadding = 1,
-	DebuffPostionX = -4,
+	DebuffPostionX = -200,
 	DebuffPostionY = -100,
-	DebufframeRealativeFrame = Minimap,
-	DebufframeRelativePoint = "TOPLEFT",
+	DebufframeRelativePoint = "TOPRIGHT",
 	DebuffframePoint = "TOPRIGHT",
 	DebuffButtonSize = 32,
 	DebuffButtonScale = 1,
@@ -86,7 +84,7 @@ function CreateButton(point, relativeFrame, relativePoint, xoffset, yOffset, wid
 	return btn;
 end
 
-function CreateSlider(name, title, point, relativeFrame, relativePoint, xoffset, yOffset, min, max, valuestep, start, script)
+function CreateSlider(name, title, point, relativeFrame, relativePoint, xoffset, yOffset, min, max, valuestep, start)
 	local s = CreateFrame("SLIDER", name, relativeFrame, "OptionsSliderTemplate")
 	s.text = _G[name.."Text"]
 	s.text:SetText(title)
@@ -102,6 +100,18 @@ function CreateSlider(name, title, point, relativeFrame, relativePoint, xoffset,
 	s:SetValueStep(valuestep)
 	s:SetObeyStepOnDrag(true)	
     return s
+end
+
+function CreateCheckBox(name, point, relativeFrame, relativePoint, xoff, yoff, state, title, tooltip)
+	local c = CreateFrame("CheckButton", name, relativeFrame, "ChatConfigCheckButtonTemplate")
+	c:SetPoint(relativePoint, xoff, yoff)
+	getglobal(c:GetName() .. 'Text'):SetText(title);
+	c:SetChecked(state)
+	c.tooltip = tooltip
+	return c
+end
+
+function CreateEditBox()
 end
 
 function Config:CreateMenu()
@@ -153,6 +163,14 @@ function Config:CreateMenu()
 		BuffButtonSliderText:SetText(value)
 		StaticPopup_Show ("ReloadUI Box")
 	end)
+
+	BetterAuraTrackerPanel.panel.BuffZoomBox = CreateCheckBox("BuffZoom", "BOTTOMRIGHT", BetterAuraTrackerPanel.panel.BuffFrameSlider, "BOTTOMRIGHT", -120, -80, BetterAuraTrackerSettings.ZoomBuffs, " Zoom", "Toggle Button Zoom haven't implement Masque yet")
+	BetterAuraTrackerPanel.panel.BuffZoomBox:SetScript("OnClick", 
+	function()
+		BetterAuraTrackerSettings.ZoomBuffs = BetterAuraTrackerPanel.panel.BuffZoomBox:GetChecked()
+		StaticPopup_Show ("ReloadUI Box")
+	end)
+
 	
 	-- Set the name for the Category for the Options Panel
 	BetterAuraTrackerPanel.panel.name = "BetterAuraTracker";

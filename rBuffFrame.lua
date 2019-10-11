@@ -15,6 +15,8 @@ L.addonShortcut   = "rbf"
 local _, core = ...;
 local buffoverlay; 
 local buffoverlayText;
+local Debuffoverlay; 
+local DebuffoverlayText;
 
 -----------------------------
 -- Hide Blizzard BuffFrame
@@ -115,6 +117,12 @@ function rBuffFrame:CreateBuffFrame(addonName,cfg)
   local frame = CreateFrame("Frame", cfg.frameName, cfg.frameParent, cfg.frameTemplate)
   frame:SetPoint(unpack(cfg.framePoint))
   frame:SetScale(cfg.frameScale)
+  if (BetterAuraTrackerSettings.ZoomBuffs)
+  then
+    print("Test")
+  else
+    print("Test2")
+  end
   local function UpdateAllBuffAnchors()
     --add temp enchant buttons
     local buttonList = GetButtonList("TempEnchant",BuffFrame.numEnchants)
@@ -126,30 +134,8 @@ function rBuffFrame:CreateBuffFrame(addonName,cfg)
   hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateAllBuffAnchors)
   --add drag functions
   rLib:CreateDragFrame(frame, L.dragFrames, -2, true)
-  buffoverlay = frame:CreateTexture(nil, "OVERLAY", nil, 6)
-  buffoverlay:SetPoint(unpack(cfg.framePoint))
-  buffoverlay:SetTexture(1.0, 0.0, 0.0)
-  buffoverlay:SetAlpha(0.5)
-  buffoverlay:SetAllPoints(frame)
-  buffoverlayText = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-  buffoverlayText:SetText("BuffFrame")
-  buffoverlayText:SetAllPoints(buffoverlay)
-  buffoverlayText:SetFont("Fonts\\ARIALN.ttf", 15, "OUTLINE")
-  buffoverlay:Hide()
-  buffoverlayText:Hide() 
   return frame
 end
-
-function rBuffFrame:UnlockFrames()
-  buffoverlay:Show()
-  buffoverlayText:Show()
-end
-
-function rBuffFrame:LockFrames()
-  buffoverlay:Hide()
-  buffoverlayText:Hide()
-end
-
 
 function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   cfg.frameName = addonName.."DebuffFrame"

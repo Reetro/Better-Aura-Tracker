@@ -15,6 +15,6 @@ buff.lua
 debuff.lua
 cooldown.lua
 timer.lua
-rBuffFrame.lua
 config.lua
+rBuffFrame.lua
 aura.lua
