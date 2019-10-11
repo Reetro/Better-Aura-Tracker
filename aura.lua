@@ -4,7 +4,27 @@ core.Aura = {}
 local Aura = core.Aura
 local buffFrame;
 local debuffFrame;
-local DebuffOverlay;
+
+local defaults = {
+  BuffframePostionX = -200,
+	BuffframePostionY = -5,
+	BuffframeRelativePoint = "TOPRIGHT",
+	BuffframePoint = "TOPRIGHT",
+	BuffButtonSize = 64,
+	BuffButtonScale = 1,
+	BuffsPerRow = 10,
+	BuffPadding = 1,
+	DebuffPostionX = -200,
+	DebuffPostionY = -100,
+	DebufframeRelativePoint = "TOPRIGHT",
+	DebuffframePoint = "TOPRIGHT",
+	DebuffButtonSize = 32,
+	DebuffButtonScale = 1,
+	DebuffsPerRow = 10,
+	DebuffPadding = 1,
+	ZoomBuffs = false,
+	ZoomDebuffs = false,
+}
 
 BetterAuraTracker = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTracker")
 
@@ -18,7 +38,6 @@ function BetterAuraTracker:OnEnable()
 end
 
 function Aura:UnlockFrames()
-  DebuffOverlay:Show()
   rBuffFrame:UnlockFrames()
   buffFrame:SetMovable(true)
   buffFrame:EnableMouse(true)
@@ -26,18 +45,40 @@ function Aura:UnlockFrames()
   buffFrame:SetScript("OnDragStart", buffFrame.StartMoving)
   buffFrame:SetScript("OnDragStop", buffFrame.StopMovingOrSizing)
   buffFrame:SetUserPlaced(true)
+
+  debuffFrame:SetMovable(true)
+  debuffFrame:EnableMouse(true)
+  debuffFrame:RegisterForDrag("LeftButton")
+  debuffFrame:SetScript("OnDragStart", debuffFrame.StartMoving)
+  debuffFrame:SetScript("OnDragStop", debuffFrame.StopMovingOrSizing)
+  debuffFrame:SetUserPlaced(true)
 end
 
 function Aura:LockFrames()
   SetBuffLocation(buffFrame)
   rBuffFrame:LockFrames()
+  -- Disable Buff moving and save postion
   buffFrame:SetMovable(false)
   buffFrame:EnableMouse(false)
-  DebuffOverlay:Hide()
+  -- Disable Debuff moving and save postion
+  SetDebuffLocation(debuffFrame)
+  debuffFrame:SetMovable(false)
+  debuffFrame:EnableMouse(false)
 end
 
 function Aura:ResetFrames()
-  buffFrame:SetPoint("TOPRIGHT", Minimap, "TOPLEFT", -5, -5)
+  -- Reset Buff Frame
+  buffFrame:SetPoint(defaults.BuffframePoint, nil, defaults.BuffframeRelativePoint, defaults.BuffframePostionX, defaults.BuffframePostionY)
+  BetterAuraTrackerSettings.BuffframePoint = defaults.BuffframePoint
+  BetterAuraTrackerSettings.BuffframeRelativePoint = defaults.BuffframeRelativePoint
+  BetterAuraTrackerSettings.BuffframePostionX = defaults.BuffframePostionX
+  BetterAuraTrackerSettings.BuffframePostionY = defaults.BuffframePostionY
+  -- Reset Debuff Frame
+  debuffFrame:SetPoint(defaults.DebuffframePoint, nil, defaults.DebufframeRelativePoint, defaults.DebuffPostionX, defaults.DebuffPostionY)
+  BetterAuraTrackerSettings.DebuffframePoint = defaults.DebuffframePoint
+  BetterAuraTrackerSettings.DebufframeRelativePoint = defaults.DebufframeRelativePoint
+  BetterAuraTrackerSettings.DebuffPostionX = defaults.DebuffPostionX
+  BetterAuraTrackerSettings.DebuffPostionY = defaults.DebuffPostionY
 end
 
 local startup = CreateFrame("FRAME", "startup");
@@ -52,10 +93,9 @@ function CreateBuffFrame()
     framePadding    = 5,
     buttonWidth     = BetterAuraTrackerSettings.BuffButtonSize,
     buttonHeight    = BetterAuraTrackerSettings.BuffButtonSize,
-    buttonMargin    = 1,
-    numCols         = 10,
+    buttonMargin    = BetterAuraTrackerSettings.BuffPadding,
+    numCols         = BetterAuraTrackerSettings.BuffsPerRow,
     startPoint      = "TOPRIGHT",
-    rowMargin       = 20,
   }
   buffFrame = rBuffFrame:CreateBuffFrame(A,buffFrameConfig)
 end
@@ -63,44 +103,21 @@ end
 
 function CreateDebuffFrame()
   local debuffFrameConfig = {
-    framePoint      = { "TOPRIGHT", Minimap, "TOPLEFT", -4, -100 },
-    frameScale      = 1,
+    framePoint      = { BetterAuraTrackerSettings.DebuffframePoint, nil, BetterAuraTrackerSettings.DebufframeRelativePoint, BetterAuraTrackerSettings.DebuffPostionX, BetterAuraTrackerSettings.DebuffPostionY },
+    frameScale      = BetterAuraTrackerSettings.DebuffButtonScale,
     framePadding    = 5,
-    buttonWidth     = 32,
-    buttonHeight    = 32,
-    buttonMargin    = 5,
-    numCols         = 8,
+    buttonWidth     = BetterAuraTrackerSettings.DebuffButtonSize,
+    buttonHeight    = BetterAuraTrackerSettings.DebuffButtonSize,
+    buttonMargin    = BetterAuraTrackerSettings.DebuffPadding,
+    numCols         = BetterAuraTrackerSettings.DebuffsPerRow,
     startPoint      = "TOPRIGHT",
-  }  
-  DebuffOverlay = CreateDebuffOverlay(debuffFrameConfig.framePoint)  
+  }   
   debuffFrame = rBuffFrame:CreateDebuffFrame(A, debuffFrameConfig)
-  DebuffOverlay:Hide()
 end 
 
 function getAura()
   CreateBuffFrame()
   CreateDebuffFrame()
-end
-
-function CreateDebuffOverlay(location)
-  local frame = CreateFrame("Frame", "DragFrame2", UIParent)
-  frame:SetMovable(true)
-  frame:EnableMouse(true)
-  frame:RegisterForDrag("LeftButton")
-  frame:SetScript("OnDragStart", frame.StartMoving)
-  frame:SetScript("OnDragStop", frame.StopMovingOrSizing)
-  -- The code below makes the frame visible, and is not necessary to enable dragging.
-  frame:SetPoint(unpack(location)) 
-  frame:SetWidth(80) 
-  frame:SetHeight(80)
-  local tex = frame:CreateTexture("ARTWORK");
-  tex:SetAllPoints();
-  tex:SetTexture(1.0, 0.5, 0); tex:SetAlpha(0.5);
-  local Text = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-  Text:SetText("DebuffFrame")
-  Text:SetAllPoints(frame)
-  Text:SetFont("Fonts\\ARIALN.ttf", 15, "OUTLINE")
-  return frame
 end
 
 function SetBuffLocation(frame)
@@ -111,3 +128,12 @@ function SetBuffLocation(frame)
   BetterAuraTrackerSettings.BuffframePostionY = yOfs
   BetterAuraTrackerSettings.BuffframeRelativePoint = relativePoint
 end
+
+function SetDebuffLocation(frame)
+  local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint()
+   frame:SetPoint(point, relativeTo, relativePoint, xOfs, yOfs)
+   BetterAuraTrackerSettings.DebuffframePoint = point
+   BetterAuraTrackerSettings.DebuffPostionX = xOfs
+   BetterAuraTrackerSettings.DebuffPostionY = yOfs
+   BetterAuraTrackerSettings.DebufframeRelativePoint = relativePoint
+ end

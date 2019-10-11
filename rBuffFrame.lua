@@ -15,6 +15,10 @@ L.addonShortcut   = "rbf"
 local _, core = ...;
 local buffoverlay; 
 local buffoverlayText;
+local buffTexture;
+local debuffoverlay;
+local debuffTexture; 
+local debuffoverlayText;
 
 -----------------------------
 -- Hide Blizzard BuffFrame
@@ -126,28 +130,22 @@ function rBuffFrame:CreateBuffFrame(addonName,cfg)
   hooksecurefunc("BuffFrame_UpdateAllBuffAnchors", UpdateAllBuffAnchors)
   --add drag functions
   rLib:CreateDragFrame(frame, L.dragFrames, -2, true)
-  buffoverlay = frame:CreateTexture(nil, "OVERLAY", nil, 6)
-  buffoverlay:SetPoint(unpack(cfg.framePoint))
-  buffoverlay:SetTexture(1.0, 0.0, 0.0)
-  buffoverlay:SetAlpha(0.5)
-  buffoverlay:SetAllPoints(frame)
-  buffoverlayText = frame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
-  buffoverlayText:SetText("BuffFrame")
-  buffoverlayText:SetAllPoints(buffoverlay)
-  buffoverlayText:SetFont("Fonts\\ARIALN.ttf", 15, "OUTLINE")
-  buffoverlay:Hide()
-  buffoverlayText:Hide() 
+  SetupBuffOverlay(frame, cfg)
   return frame
 end
 
 function rBuffFrame:UnlockFrames()
   buffoverlay:Show()
   buffoverlayText:Show()
+  debuffoverlay:Show()
+  debuffoverlayText:Show()
 end
 
 function rBuffFrame:LockFrames()
   buffoverlay:Hide()
   buffoverlayText:Hide()
+  debuffoverlay:Hide()
+  debuffoverlayText:Hide()
 end
 
 
@@ -158,7 +156,8 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   --create new parent frame for buttons
   local frame = CreateFrame("Frame", cfg.frameName, cfg.frameParent, cfg.frameTemplate)
   frame:SetPoint(unpack(cfg.framePoint))
-  frame:SetScale(cfg.frameScale)
+  frame:SetScale(cfg.frameScale)  
+  print(frame:GetHeight())
   local function UpdateAllDebuffAnchors(buttonName, index)
     --add all other debuff buttons
     local buttonList = GetButtonList("DebuffButton",DEBUFF_MAX_DISPLAY)
@@ -175,6 +174,42 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   end
   if relativeToName ~= addonName.."BuffFrame" then
     rLib:CreateDragFrame(frame, L.dragFrames, -2, true)
-  end  
+  end
+  SetupDebuffOverlay(frame, cfg)
   return frame
+end
+
+
+function SetupBuffOverlay(frame, cfg)
+  buffoverlay = CreateFrame("Frame", "BuffOverlay", frame)
+  buffTexture = buffoverlay:CreateTexture(nil, "OVERLAY", nil, 6)
+  buffTexture:SetPoint(unpack(cfg.framePoint))
+  buffTexture:SetTexture(1.0, 0.0, 0.0)
+  buffTexture:SetAlpha(0.5)
+  buffoverlay:SetAllPoints(frame)
+  buffTexture:SetAllPoints(buffoverlay)
+  buffoverlayText = buffoverlay:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+  buffoverlayText:SetText("BuffFrame")
+  buffoverlayText:SetAllPoints(buffoverlay)
+  buffoverlayText:SetFont("Fonts\\ARIALN.ttf", 15, "OUTLINE")
+  buffoverlay:Hide()
+  buffoverlayText:Hide()
+end
+
+function SetupDebuffOverlay(frame,cfg)
+  debuffoverlay = CreateFrame("Frame", "debuffOverlay", frame)
+  debuffTexture = debuffoverlay:CreateTexture(nil, "OVERLAY", nil, 6)
+  debuffTexture:SetPoint(unpack(cfg.framePoint))
+  debuffTexture:SetTexture(1.0, 0.0, 0.0)
+  debuffTexture:SetAlpha(0.5)
+  debuffoverlay:SetAllPoints(frame)
+  debuffTexture:SetAllPoints(debuffoverlay)
+  debuffoverlayText = debuffoverlay:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
+  debuffoverlayText:SetText("DebuffFrame")
+  debuffoverlayText:SetAllPoints(debuffoverlay)
+  debuffoverlayText:SetFont("Fonts\\ARIALN.ttf", 15, "OUTLINE")
+  debuffoverlay:Hide()
+  debuffoverlayText:Hide()
+  frame:SetHeight(cfg.buttonWidth)
+  frame:SetWidth(cfg.buttonHeight)
 end

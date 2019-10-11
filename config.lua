@@ -13,19 +13,17 @@ local UIConfig;
 --------------------------------------
 
 BetterAuraTrackerSettings = {
-	BuffframePostionX = -5,
+	BuffframePostionX = -200,
 	BuffframePostionY = -5,
-	BuffframeRealativeFrame = Minimap,
-	BuffframeRelativePoint = "TOPLEFT",
+	BuffframeRelativePoint = "TOPRIGHT",
 	BuffframePoint = "TOPRIGHT",
 	BuffButtonSize = 64,
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
 	BuffPadding = 1,
-	DebuffPostionX = -4,
+	DebuffPostionX = -200,
 	DebuffPostionY = -100,
-	DebufframeRealativeFrame = Minimap,
-	DebufframeRelativePoint = "TOPLEFT",
+	DebufframeRelativePoint = "TOPRIGHT",
 	DebuffframePoint = "TOPRIGHT",
 	DebuffButtonSize = 32,
 	DebuffButtonScale = 1,
