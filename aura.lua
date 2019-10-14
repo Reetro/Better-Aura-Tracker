@@ -13,7 +13,7 @@ local defaults = {
 	BuffButtonSize = 64,
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
-	BuffPadding = 1,
+	BuffPadding = 0,
 	DebuffPostionX = -200,
 	DebuffPostionY = -100,
 	DebufframeRelativePoint = "TOPRIGHT",
@@ -21,7 +21,7 @@ local defaults = {
 	DebuffButtonSize = 32,
 	DebuffButtonScale = 1,
 	DebuffsPerRow = 10,
-	DebuffPadding = 1,
+	DebuffPadding = 0,
 	ZoomBuffs = false,
 	ZoomDebuffs = false,
 }
