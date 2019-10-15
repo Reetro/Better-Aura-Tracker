@@ -169,7 +169,7 @@ function Config:CreateMenu()
 		end
 	end)
 	-- Buff Button Size Slider 
-	BetterAuraTrackerPanel.panel.ButtonSizeSlider = CreateSlider("BuffButtonSizeSlider", "Buff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -180, 32, 1024, 32, Config:GetBuffButtonSize())
+	BetterAuraTrackerPanel.panel.ButtonSizeSlider = CreateSlider("BuffButtonSizeSlider", "Buff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -180, 32, 1024, 1, Config:GetBuffButtonSize())
 	local BuffButtonSliderText = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	local BuffButtonEditBox = CreateEditBox(50,30, "BuffButtonSizeBox", "LEFT", "RIGHT", BetterAuraTrackerPanel.panel.ButtonSizeSlider, 15,0, true)
 	BuffButtonSliderText:SetPoint("TOPLEFT", 370, -195)
@@ -272,7 +272,7 @@ function Config:CreateMenu()
 		end
 	end)
 	-- Debuff Size Slider
-	local DebuffSizeSlider = CreateSlider("DebuffSizeSlider", "Debuff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -380, 32, 1024, 32, BetterAuraTrackerSettings.DebuffButtonSize)
+	local DebuffSizeSlider = CreateSlider("DebuffSizeSlider", "Debuff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -380, 32, 1024, 1, BetterAuraTrackerSettings.DebuffButtonSize)
 	local DeSizeEditbox = CreateEditBox(50,30, "DeSizeEditbox", "LEFT", "Right", DebuffSizeSlider, 15,0, true)
     local DebuffSizeText = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	DebuffSizeText:SetPoint("TOPLEFT", 370, -400)
