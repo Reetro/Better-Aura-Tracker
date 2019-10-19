@@ -21,6 +21,14 @@ local debuffTexture;
 local debuffoverlayText;
 
 -----------------------------
+-- Hide Blizzard BuffFrame
+-----------------------------
+
+--local hiddenFrame = CreateFrame("Frame")
+--hiddenFrame:Hide()
+--BuffFrame:SetParent(hiddenFrame)
+
+-----------------------------
 -- rBuffFrame Global
 -----------------------------
 
@@ -147,9 +155,9 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   cfg.frameTemplate = nil
   --create new parent frame for buttons
   local frame = CreateFrame("Frame", cfg.frameName, cfg.frameParent, cfg.frameTemplate)
-  
   frame:SetPoint(unpack(cfg.framePoint))
   frame:SetScale(cfg.frameScale)  
+  print(frame:GetHeight())
   local function UpdateAllDebuffAnchors(buttonName, index)
     --add all other debuff buttons
     local buttonList = GetButtonList("DebuffButton",DEBUFF_MAX_DISPLAY)

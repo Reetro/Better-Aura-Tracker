@@ -28,7 +28,7 @@ local defaults = {
 
 BetterAuraTracker = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTracker")
 
-function startup(self, event, arg2, ...)
+local function startup(self, event, arg2, ...)
   core.Config.CreateMenu()
 end
 
@@ -81,9 +81,9 @@ function Aura:ResetFrames()
   BetterAuraTrackerSettings.DebuffPostionY = defaults.DebuffPostionY
 end
 
-local Fstartup = CreateFrame("FRAME", "startup")
-Fstartup:RegisterEvent("PLAYER_ENTERING_WORLD")
-Fstartup:SetScript("OnEvent", OnEvent)
+local startup = CreateFrame("FRAME", "startup");
+startup:RegisterEvent("PLAYER_LOGIN");
+startup:SetScript("OnEvent", getAura);
 
 
 function CreateBuffFrame()
@@ -115,6 +115,10 @@ function CreateDebuffFrame()
   debuffFrame = rBuffFrame:CreateDebuffFrame(A, debuffFrameConfig)
 end 
 
+function getAura()
+  CreateBuffFrame()
+  CreateDebuffFrame()
+end
 
 function SetBuffLocation(frame)
  local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint()
@@ -133,74 +137,3 @@ function SetDebuffLocation(frame)
    BetterAuraTrackerSettings.DebuffPostionY = yOfs
    BetterAuraTrackerSettings.DebufframeRelativePoint = relativePoint
  end
-
- -- Debug Function
-function tablelength(T)
-  local count = 0
-  for _ in pairs(T) do count = count + 1 end
-  return count
-end
-
-function getAura()
-  CreateBuffFrame()
-  CreateDebuffFrame()
-end
-
-function ReSizeBuff()
-  buffFrame:SetSize(BetterAuraTrackerSettings.BuffButtonSize, BetterAuraTrackerSettings.BuffButtonSize)
-  print(buffFrame:GetWidth())
-end
-
--- Masque Setup
-
--- See if Masque is installed
-local LMB = LibStub("Masque", true) or (LibMasque and LibMasque("Button"))
-if not LMB then return end
-
-local function NULL()
-end
-local Buffs = LMB:Group("Better Aura Tracker", "Buffs")
-local Debuffs = LMB:Group("Better Aura Tracker", "Debuffs")
-local TempEnchant = LMB:Group("Better Aura Tracker", "TempEnchant")
-
-local function OnEvent(self, event, addon)
-	for i=1, BUFF_MAX_DISPLAY do
-		local buff = _G["BuffButton"..i]
-		if buff then
-      Buffs:AddButton(buff)
-      buff:SetSize(BetterAuraTrackerSettings.BuffButtonSize, BetterAuraTrackerSettings.BuffButtonSize)
-		end
-		if not buff then break end
-	end
-	
-	for i=1, BUFF_MAX_DISPLAY do
-		local debuff = _G["DebuffButton"..i]
-		if debuff then
-			Debuffs:AddButton(debuff)
-		end
-		if not debuff then break end
-	end
-	
-	for i=1, NUM_TEMP_ENCHANT_FRAMES do
-		local f = _G["TempEnchant"..i]
-		--_G["TempEnchant"..i.."Border"].SetTexture = NULL
-		if TempEnchant then
-			TempEnchant:AddButton(f)
-		end
-		_G["TempEnchant"..i.."Border"]:SetVertexColor(.75, 0, 1)
-	end
-	
-	startup:SetScript("OnEvent", nil)
-end
-
-hooksecurefunc("CreateFrame", function (_, name, parent) --dont need to do this for TempEnchant enchant frames because they are hard created in xml
-	if parent ~= BuffFrame or type(name) ~= "string" then return end
-	if strfind(name, "^DebuffButton%d+$") then
-		Debuffs:AddButton(_G[name])
-		Debuffs:ReSkin() -- Needed to prevent issues with stack text appearing under the frame.
-	elseif strfind(name, "^BuffButton%d+$") then
-		Buffs:AddButton(_G[name])
-    Buffs:ReSkin() -- Needed to prevent issues with stack text appearing under the frame.
-  end
-end
-)
