@@ -287,13 +287,13 @@ function Config:CreateMenu()
 		DeSizeEditbox:SetText(SimpleRound(value,step))
 		StaticPopup_Show ("ReloadUI Box")
 	end)
-	DeScaleEditbox:SetScript("OnTextChanged", function(self)
+	DeSizeEditbox:SetScript("OnTextChanged", function(self)
 		local val = self:GetText()
 		if tonumber(val) then
 			DebuffSizeSlider:SetValue(val)
 		end
 	  end)
-	  DeScaleEditbox:SetScript("OnEnterPressed", function(self)
+	  DeSizeEditbox:SetScript("OnEnterPressed", function(self)
 		local val = self:GetText()
 		if tonumber(val) then
 			DebuffSizeSlider:SetValue(val)
