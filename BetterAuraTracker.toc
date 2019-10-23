@@ -9,12 +9,6 @@
 embeds.xml
 rLib.lua
 dragframe.lua
-rFilterinit.lua
-functions.lua
-buff.lua
-debuff.lua
-cooldown.lua
-timer.lua
 rBuffFrame.lua
 config.lua
 aura.lua

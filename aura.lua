@@ -88,7 +88,7 @@ startup:SetScript("OnEvent", getAura);
 
 function CreateBuffFrame()
   local buffFrameConfig = {
-    framePoint      = { BetterAuraTrackerSettings.BuffframePoint,nil, BetterAuraTrackerSettings.BuffframeRelativePoint, BetterAuraTrackerSettings.BuffframePostionX, BetterAuraTrackerSettings.BuffframePostionY},
+    framePoint      = { BetterAuraTrackerSettings.BuffframePoint,nil, BetterAuraTrackerSettings.BuffframeRelativePoint, BetterAuraTrackerSettings.BuffframePostionX, BetterAuraTrackerSettings.BuffframePostionY },
     frameScale      = BetterAuraTrackerSettings.BuffButtonScale,
     framePadding    = 5,
     buttonWidth     = BetterAuraTrackerSettings.BuffButtonSize,

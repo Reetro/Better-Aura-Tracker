@@ -12,13 +12,6 @@ L.addonName       = A
 L.dragFrames      = {}
 L.addonColor      = "0000FFFF"
 L.addonShortcut   = "rbf"
-local _, core = ...;
-local buffoverlay; 
-local buffoverlayText;
-local buffTexture;
-local debuffoverlay;
-local debuffTexture; 
-local debuffoverlayText;
 
 -----------------------------
 -- Hide Blizzard BuffFrame
@@ -134,21 +127,6 @@ function rBuffFrame:CreateBuffFrame(addonName,cfg)
   return frame
 end
 
-function rBuffFrame:UnlockFrames()
-  buffoverlay:Show()
-  buffoverlayText:Show()
-  debuffoverlay:Show()
-  debuffoverlayText:Show()
-end
-
-function rBuffFrame:LockFrames()
-  buffoverlay:Hide()
-  buffoverlayText:Hide()
-  debuffoverlay:Hide()
-  debuffoverlayText:Hide()
-end
-
-
 function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   cfg.frameName = addonName.."DebuffFrame"
   cfg.frameParent = cfg.frameParent or UIParent
@@ -156,8 +134,7 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   --create new parent frame for buttons
   local frame = CreateFrame("Frame", cfg.frameName, cfg.frameParent, cfg.frameTemplate)
   frame:SetPoint(unpack(cfg.framePoint))
-  frame:SetScale(cfg.frameScale)  
-  print(frame:GetHeight())
+  frame:SetScale(cfg.frameScale)
   local function UpdateAllDebuffAnchors(buttonName, index)
     --add all other debuff buttons
     local buttonList = GetButtonList("DebuffButton",DEBUFF_MAX_DISPLAY)
@@ -178,7 +155,6 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   SetupDebuffOverlay(frame, cfg)
   return frame
 end
-
 
 function SetupBuffOverlay(frame, cfg)
   buffoverlay = CreateFrame("Frame", "BuffOverlay", frame)
@@ -212,4 +188,18 @@ function SetupDebuffOverlay(frame,cfg)
   debuffoverlayText:Hide()
   frame:SetHeight(cfg.buttonWidth)
   frame:SetWidth(cfg.buttonHeight)
+end
+
+function rBuffFrame:UnlockFrames()
+  buffoverlay:Show()
+  buffoverlayText:Show()
+  debuffoverlay:Show()
+  debuffoverlayText:Show()
+end
+
+function rBuffFrame:LockFrames()
+  buffoverlay:Hide()
+  buffoverlayText:Hide()
+  debuffoverlay:Hide()
+  debuffoverlayText:Hide()
 end
