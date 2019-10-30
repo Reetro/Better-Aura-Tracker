@@ -63,7 +63,7 @@ function Config:GetBuffFrameScale()
 end
 
 function AddText(frame, point, xoff,yoff,text,size)
-	local t = frame.panel:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
+	local t = frame:CreateFontString(nil, "ARTWORK", "GameFontNormalLarge")
 	t:SetPoint(point, xoff, yoff)
 	t:SetText(text)
 	t:SetFont("Fonts\\MORPHEUS.ttf", size)
@@ -71,7 +71,7 @@ function AddText(frame, point, xoff,yoff,text,size)
 end
 
 function AddSubText(frame, point, xoff,yoff,text,size)
-	local t = frame.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
+	local t = frame:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	t:SetPoint(point, xoff, yoff)
 	t:SetText(text)
 	t:SetFont("Fonts\\MORPHEUS.ttf", size)
@@ -122,7 +122,7 @@ function Config:CreateMenu()
 	BetterAuraTrackerPanel = {};
 	BetterAuraTrackerPanel.panel = CreateFrame( "Frame", "BetterAuraTrackerPanel", UIParent )
 	-- Title Text
-	BetterAuraTrackerPanel.panel.title = AddText(BetterAuraTrackerPanel, "TOPLEFT", 16, -16, "BetterAuraTracker Options", 30)
+	BetterAuraTrackerPanel.panel.title = AddText(BetterAuraTrackerPanel.panel, "TOPLEFT", 16, -16, "BetterAuraTracker Options", 30)
 	-- Unlock Button 
 	BetterAuraTrackerPanel.panel.Unlock = CreateButton("TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -60, 140, 40, "Unlock")
 	BetterAuraTrackerPanel.panel.Unlock:SetScript("OnClick", function(self, arg1)
@@ -141,7 +141,7 @@ function Config:CreateMenu()
 	core.Aura:LockFrames()
 	end)
 	-- Buff Sub Text 
-	BetterAuraTrackerPanel.panel.BuffSub = AddSubText(BetterAuraTrackerPanel, "TOPLEFT", 20, -120, "Buff Options", 18)
+	BetterAuraTrackerPanel.panel.BuffSub = AddSubText(BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -120, "Buff Options", 18)
 	-- Buff Frame Scale Slider
 	BetterAuraTrackerPanel.panel.BuffFrameSlider = CreateSlider("BuffScaleSlider", "Buff Scale", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -180, 1, 10, 1, Config:GetBuffFrameScale())
 	local ScaleEditbox = CreateEditBox(50,30, "ScaleEditBox", "LEFT", "Right", BetterAuraTrackerPanel.panel.BuffFrameSlider, 15,0, true)
@@ -244,7 +244,7 @@ function Config:CreateMenu()
 		end
 	end)
 	-- Debuff Sub Text
-	BetterAuraTrackerPanel.panel.DebuffSub = AddSubText(BetterAuraTrackerPanel, "TOPLEFT", 20, -320, "Debuff Options", 18)
+	BetterAuraTrackerPanel.panel.DebuffSub = AddSubText(BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -320, "Debuff Options", 18)
 	-- Debuff Scale Slider
 	local DebuffFrameSlider = CreateSlider("DebuffScaleSlider", "Debuff Scale", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -380, 1, 10, 1, BetterAuraTrackerSettings.DebuffButtonScale)
 	local DeScaleEditbox = CreateEditBox(50,30, "ScaleEditBox", "LEFT", "Right", DebuffFrameSlider, 15,0, true)
@@ -326,7 +326,8 @@ function Config:CreateMenu()
 			DebuffsPerRowS:SetValue(val)
 		end
 	end)
--- Debuffs Padding
+
+	-- Debuffs Padding
 	local DebuffsPaddingS = CreateSlider("DebuffsPaddingS", "Debuffs Padding", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -450, 0, 12, 1, BetterAuraTrackerSettings.DebuffPadding)
 	local DebuffsPaddingE = CreateEditBox(50,30, "DebuffsPaddingE", "LEFT", "Right", DebuffsPaddingS, 15,0, true)
 	local DebuffsPaddingT = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
@@ -355,8 +356,18 @@ function Config:CreateMenu()
 	end)
 
 
+	-- Setup font options menu
+	BetterAuraTrackerPanel.FontOptionsPanel = CreateFrame( "Frame", "FontOptionsPanel", BetterAuraTrackerPanel.panel)
+	BetterAuraTrackerPanel.FontOptionsPanel.name = "Font Options"
+
+	BetterAuraTrackerPanel.FontOptionsPanel.title = AddText(BetterAuraTrackerPanel.FontOptionsPanel, "TOPLEFT", 16, -16, "Font Options", 30)
+
+
+
 	-- Set the name for the Category for the Options Panel
 	BetterAuraTrackerPanel.panel.name = "BetterAuraTracker";
+	BetterAuraTrackerPanel.FontOptionsPanel.parent = BetterAuraTrackerPanel.panel.name;
 	-- Add the panel to the Interface Options
 	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.panel);
+	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.FontOptionsPanel);
 end
