@@ -7,6 +7,7 @@ core.Config = {}; -- adds Config table to addon namespace
 
 local Config = core.Config;
 local UIConfig;
+local LSM = LibStub('LibSharedMedia-3.0')
 
 --------------------------------------
 -- Saved Settings 
@@ -356,18 +357,30 @@ function Config:CreateMenu()
 	end)
 
 
-	-- Setup font options menu
-	BetterAuraTrackerPanel.FontOptionsPanel = CreateFrame( "Frame", "FontOptionsPanel", BetterAuraTrackerPanel.panel)
-	BetterAuraTrackerPanel.FontOptionsPanel.name = "Font Options"
+	-- Setup buff font options menu
+	BetterAuraTrackerPanel.BuffFontOptionsPanel = CreateFrame( "Frame", "BuffFontOptionsPanel", BetterAuraTrackerPanel.panel)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.name = "Buff Font Options"
 
-	BetterAuraTrackerPanel.FontOptionsPanel.title = AddText(BetterAuraTrackerPanel.FontOptionsPanel, "TOPLEFT", 16, -16, "Font Options", 30)
+	-- Buff Font Options Title
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options", 30)
+	
+	
+	
 
+	-- Setup debuff font options menu
+	BetterAuraTrackerPanel.DebuffFontOptionsPanel = CreateFrame( "Frame", "DebuffFontOptionsPanel", BetterAuraTrackerPanel.panel)
+	BetterAuraTrackerPanel.DebuffFontOptionsPanel.name = "Debuff Font Options"
+	
+	-- Debuff Font Options Title
+	BetterAuraTrackerPanel.DebuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.DebuffFontOptionsPanel, "TOPLEFT", 16, -16, "Debuff Font Options", 30)
 
 
 	-- Set the name for the Category for the Options Panel
 	BetterAuraTrackerPanel.panel.name = "BetterAuraTracker";
-	BetterAuraTrackerPanel.FontOptionsPanel.parent = BetterAuraTrackerPanel.panel.name;
-	-- Add the panel to the Interface Options
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.parent = BetterAuraTrackerPanel.panel.name;
+	BetterAuraTrackerPanel.DebuffFontOptionsPanel.parent = BetterAuraTrackerPanel.panel.name;
+	-- Add the panels to the Interface Options
 	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.panel);
-	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.FontOptionsPanel);
+	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.BuffFontOptionsPanel);
+	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.DebuffFontOptionsPanel);
 end
