@@ -3,9 +3,9 @@
 --------------------------------------
 local A, L = ...
 local _, core = ...;
-core.Config = {}; -- adds Config table to addon namespace
+core.BetterConfig = {}; -- adds BetterConfig table to addon namespace
 
-local Config = core.Config;
+local BetterConfig = core.BetterConfig;
 local UIConfig;
 local LSM = LibStub('LibSharedMedia-3.0')
 
@@ -22,6 +22,9 @@ BetterAuraTrackerSettings = {
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
 	BuffPadding = 0,
+	BuffFont = "Fonts\\FRIZQT__.TTF",
+	BuffFontSize = 11,
+	BuffFontOutline = "OUTLINE, MONOCHROME",
 	DebuffPostionX = -200,
 	DebuffPostionY = -100,
 	DebufframeRelativePoint = "TOPRIGHT",
@@ -30,12 +33,13 @@ BetterAuraTrackerSettings = {
 	DebuffButtonScale = 1,
 	DebuffsPerRow = 10,
 	DebuffPadding = 0,
-	ZoomBuffs = false,
-	ZoomDebuffs = false,
+	DebuffFont = "Fonts\\FRIZQT__.TTF",
+	DebuffFontSize = 11,
+	DebuffFontOutline = "OUTLINE, MONOCHROME",
 }
 
 --------------------------------------
--- Config functions
+-- BetterConfig functions
 --------------------------------------
 
 StaticPopupDialogs["ReloadUI Box"] = {
@@ -55,11 +59,11 @@ local SimpleRound = function(val,valStep)
     return floor(val/valStep)*valStep
 end
 
-function Config:GetBuffButtonSize()
+function BetterConfig:GetBuffButtonSize()
 	return BetterAuraTrackerSettings.BuffButtonSize
 end 
 
-function Config:GetBuffFrameScale()
+function BetterConfig:GetBuffFrameScale()
 	return BetterAuraTrackerSettings.BuffButtonScale
 end
 
@@ -118,7 +122,7 @@ function CreateEditBox(sizeX , sizeY, name, point, relativePoint, parent, xoff, 
 	return E
 end
 
-function Config:CreateMenu()
+function BetterConfig:CreateMenu()
 	-- Register in the Interface Addon Options GUI	
 	BetterAuraTrackerPanel = {};
 	BetterAuraTrackerPanel.panel = CreateFrame( "Frame", "BetterAuraTrackerPanel", UIParent )
@@ -144,7 +148,7 @@ function Config:CreateMenu()
 	-- Buff Sub Text 
 	BetterAuraTrackerPanel.panel.BuffSub = AddSubText(BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -120, "Buff Options", 18)
 	-- Buff Frame Scale Slider
-	BetterAuraTrackerPanel.panel.BuffFrameSlider = CreateSlider("BuffScaleSlider", "Buff Scale", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -180, 1, 10, 1, Config:GetBuffFrameScale())
+	BetterAuraTrackerPanel.panel.BuffFrameSlider = CreateSlider("BuffScaleSlider", "Buff Scale", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 20, -180, 1, 10, 1, BetterConfig:GetBuffFrameScale())
 	local ScaleEditbox = CreateEditBox(50,30, "ScaleEditBox", "LEFT", "Right", BetterAuraTrackerPanel.panel.BuffFrameSlider, 15,0, true)
     local BuffSliderFrameText = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	BuffSliderFrameText:SetPoint("TOPLEFT", 90, -195)
@@ -170,7 +174,7 @@ function Config:CreateMenu()
 		end
 	end)
 	-- Buff Button Size Slider 
-	BetterAuraTrackerPanel.panel.ButtonSizeSlider = CreateSlider("BuffButtonSizeSlider", "Buff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -180, 32, 1024, 1, Config:GetBuffButtonSize())
+	BetterAuraTrackerPanel.panel.ButtonSizeSlider = CreateSlider("BuffButtonSizeSlider", "Buff Button Size", "TOPLEFT", BetterAuraTrackerPanel.panel, "TOPLEFT", 300, -180, 32, 1024, 1, BetterConfig:GetBuffButtonSize())
 	local BuffButtonSliderText = BetterAuraTrackerPanel.panel:CreateFontString(nil, "ARTWORK", "GameFontHighlightSmall")
 	local BuffButtonEditBox = CreateEditBox(50,30, "BuffButtonSizeBox", "LEFT", "RIGHT", BetterAuraTrackerPanel.panel.ButtonSizeSlider, 15,0, true)
 	BuffButtonSliderText:SetPoint("TOPLEFT", 370, -195)

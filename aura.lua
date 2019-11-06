@@ -13,7 +13,10 @@ local defaults = {
 	BuffButtonSize = 64,
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
-	BuffPadding = 0,
+  BuffPadding = 0,
+  BuffFont = "Fonts\\FRIZQT__.TTF",
+  BuffFontSize = 11,
+  BuffFontOutline = "OUTLINE, MONOCHROME",
 	DebuffPostionX = -200,
 	DebuffPostionY = -100,
 	DebufframeRelativePoint = "TOPRIGHT",
@@ -22,14 +25,15 @@ local defaults = {
 	DebuffButtonScale = 1,
 	DebuffsPerRow = 10,
 	DebuffPadding = 0,
-	ZoomBuffs = false,
-	ZoomDebuffs = false,
+  DebuffFont = "Fonts\\FRIZQT__.TTF",
+  DebuffFontSize = 11,
+  DebuffFontOutline = "OUTLINE, MONOCHROME"
 }
 
 BetterAuraTracker = LibStub("AceAddon-3.0"):NewAddon("BetterAuraTracker")
 
 local function startup(self, event, arg2, ...)
-  core.Config.CreateMenu()
+  core.BetterConfig.CreateMenu()
 end
 
 function BetterAuraTracker:OnEnable()
@@ -138,7 +142,48 @@ function SetDebuffLocation(frame)
    BetterAuraTrackerSettings.DebufframeRelativePoint = relativePoint
  end
 
--- See if Masque is installed
+
+-----------------------------
+-- Setup Font
+-----------------------------
+
+local fontframe = CreateFrame("Frame")
+
+local function OnEvent(self, event, addon)
+	for i=1, BUFF_MAX_DISPLAY do
+		local buff = _G["BuffButton"..i]
+    if buff then
+     buff.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
+		end
+		if not buff then break end
+	end
+	
+	for i=1, BUFF_MAX_DISPLAY do
+		local debuff = _G["DebuffButton"..i]
+    if debuff then
+      debuff.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
+		end
+		if not debuff then break end
+	end
+	
+	for i=1, NUM_TEMP_ENCHANT_FRAMES do
+		local f = _G["TempEnchant"..i]
+		if TempEnchant then
+			TempEnchant.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
+		end
+	end
+	
+  fontframe:SetScript("OnEvent", nil)
+end
+
+fontframe:SetScript("OnEvent", OnEvent)
+fontframe:RegisterEvent("PLAYER_ENTERING_WORLD")
+
+-----------------------------
+-- Setup Masque
+-----------------------------
+
+-- See if Masque is installed if it isn't then return
 local LMB = LibStub("Masque", true) or (LibMasque and LibMasque("Button"))
 if not LMB then return end
 

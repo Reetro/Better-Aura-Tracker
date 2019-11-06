@@ -14,14 +14,6 @@ L.addonColor      = "0000FFFF"
 L.addonShortcut   = "rbf"
 
 -----------------------------
--- Hide Blizzard BuffFrame
------------------------------
-
---local hiddenFrame = CreateFrame("Frame")
---hiddenFrame:Hide()
---BuffFrame:SetParent(hiddenFrame)
-
------------------------------
 -- rBuffFrame Global
 -----------------------------
 
@@ -155,6 +147,10 @@ function rBuffFrame:CreateDebuffFrame(addonName,cfg)
   SetupDebuffOverlay(frame, cfg)
   return frame
 end
+
+-----------------------------
+-- Setup Unlock overlay
+-----------------------------
 
 function SetupBuffOverlay(frame, cfg)
   buffoverlay = CreateFrame("Frame", "BuffOverlay", frame)
