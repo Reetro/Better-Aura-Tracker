@@ -91,6 +91,13 @@ startup:SetScript("OnEvent", getAura);
 
 
 function CreateBuffFrame()
+
+  -- Resize Temp Enchant Buttons
+  for i=1, NUM_TEMP_ENCHANT_FRAMES do
+    local TempEnchant = _G["TempEnchant"..i]
+    TempEnchant:SetSize(BetterAuraTrackerSettings.BuffButtonSize, BetterAuraTrackerSettings.BuffButtonSize)
+  end
+
   local buffFrameConfig = {
     framePoint      = { BetterAuraTrackerSettings.BuffframePoint,nil, BetterAuraTrackerSettings.BuffframeRelativePoint, BetterAuraTrackerSettings.BuffframePostionX, BetterAuraTrackerSettings.BuffframePostionY },
     frameScale      = BetterAuraTrackerSettings.BuffButtonScale,
@@ -153,7 +160,7 @@ local function OnEvent(self, event, addon)
 	for i=1, BUFF_MAX_DISPLAY do
 		local buff = _G["BuffButton"..i]
     if buff then
-     buff.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
+     buff.duration:SetFont(BetterAuraTrackerSettings.BuffFont, BetterAuraTrackerSettings.BuffFontSize)
 		end
 		if not buff then break end
 	end
@@ -161,15 +168,15 @@ local function OnEvent(self, event, addon)
 	for i=1, BUFF_MAX_DISPLAY do
 		local debuff = _G["DebuffButton"..i]
     if debuff then
-      debuff.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
+      debuff.duration:SetFont(BetterAuraTrackerSettings.DebuffFont, BetterAuraTrackerSettings.DebuffFontSize)
 		end
 		if not debuff then break end
 	end
 	
 	for i=1, NUM_TEMP_ENCHANT_FRAMES do
 		local f = _G["TempEnchant"..i]
-		if TempEnchant then
-			TempEnchant.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
+    if TempEnchant then
+			TempEnchant.duration:SetFont(BetterAuraTrackerSettings.BuffFont, BetterAuraTrackerSettings.BuffFontSize)
 		end
 	end
 	
