@@ -368,7 +368,15 @@ function BetterConfig:CreateMenu()
 	-- Buff Font Options Title
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options", 30)
 	
-	
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop = CreateFrame("frame", "BuffFontDrop", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetPoint("TOPLEFT", 0, -65)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.onClick = function(self, arg1, arg2, checked)
+		print(UIDropDownMenu_GetText(self), UIDROPDOWNMENU_MENU_VALUE, arg1, arg2)
+	end
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.initialize = function(self, level)
+		local info = UIDropDownMenu_CreateInfo()
+		
+	end
 	
 
 	-- Setup debuff font options menu
