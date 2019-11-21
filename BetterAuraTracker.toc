@@ -10,5 +10,6 @@ embeds.xml
 rLib.lua
 dragframe.lua
 rBuffFrame.lua
+FontSetup.lua
 config.lua
 aura.lua

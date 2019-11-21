@@ -7,8 +7,7 @@ core.BetterConfig = {}; -- adds BetterConfig table to addon namespace
 
 local BetterConfig = core.BetterConfig;
 local UIConfig;
-local LSM = LibStub('LibSharedMedia-3.0')
-
+ 
 --------------------------------------
 -- Saved Settings 
 --------------------------------------
@@ -54,6 +53,8 @@ StaticPopupDialogs["ReloadUI Box"] = {
 	hideOnEscape = true,
 	preferredIndex = 3, 
   }
+
+local FontOptionsList = core.Fonts.GetAllFonts()
 
 local SimpleRound = function(val,valStep)
     return floor(val/valStep)*valStep
@@ -367,17 +368,23 @@ function BetterConfig:CreateMenu()
 
 	-- Buff Font Options Title
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options", 30)
-	
+	-- Setup Buff font drop down
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop = CreateFrame("frame", "BuffFontDrop", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetPoint("TOPLEFT", 0, -65)
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.onClick = function(self, arg1, arg2, checked)
-		print(UIDropDownMenu_GetText(self), UIDROPDOWNMENU_MENU_VALUE, arg1, arg2)
+		if arg1 == 1 then
+			print("You can continue to believe whatever you want to believe.")
+		   elseif arg1 == 2 then
+			print("Let's see how deep the rabbit hole goes.")
+		end
 	end
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.initialize = function(self, level)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.initialize = function(self, level, checked)
 		local info = UIDropDownMenu_CreateInfo()
-		
+		info.text, info.checked = "Blue Pill", true
+		UIDropDownMenu_AddButton(info)
+		info.text, info.checked = "Red Pill", false
+		UIDropDownMenu_AddButton(info)
 	end
-	
 
 	-- Setup debuff font options menu
 	BetterAuraTrackerPanel.DebuffFontOptionsPanel = CreateFrame( "Frame", "DebuffFontOptionsPanel", BetterAuraTrackerPanel.panel)
