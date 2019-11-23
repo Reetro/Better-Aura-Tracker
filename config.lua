@@ -54,8 +54,6 @@ StaticPopupDialogs["ReloadUI Box"] = {
 	preferredIndex = 3, 
   }
 
-local FontOptionsList = core.Fonts.GetAllFonts()
-
 local SimpleRound = function(val,valStep)
     return floor(val/valStep)*valStep
 end
@@ -122,6 +120,17 @@ function CreateEditBox(sizeX , sizeY, name, point, relativePoint, parent, xoff, 
 	E:SetAutoFocus(false)
 	return E
 end
+
+local OutLineOptions = {
+    { text = "Select an Option", isTitle = true},
+    { text = "Option 1", func = function() print("You've chosen option 1"); end },
+    { text = "Option 2", func = function() print("You've chosen option 2"); end },
+    { text = "More Options", hasArrow = true,
+        menuList = {
+            { text = "Option 3", func = function() print("You've chosen option 3"); end }
+        } 
+    }
+}
 
 function BetterConfig:CreateMenu()
 	-- Register in the Interface Addon Options GUI	
@@ -369,22 +378,16 @@ function BetterConfig:CreateMenu()
 	-- Buff Font Options Title
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options", 30)
 	-- Setup Buff font drop down
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop = CreateFrame("frame", "BuffFontDrop", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetPoint("TOPLEFT", 0, -65)
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.onClick = function(self, arg1, arg2, checked)
-		if arg1 == 1 then
-			print("You can continue to believe whatever you want to believe.")
-		   elseif arg1 == 2 then
-			print("Let's see how deep the rabbit hole goes.")
-		end
-	end
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.initialize = function(self, level, checked)
-		local info = UIDropDownMenu_CreateInfo()
-		info.text, info.checked = "Blue Pill", true
-		UIDropDownMenu_AddButton(info)
-		info.text, info.checked = "Red Pill", false
-		UIDropDownMenu_AddButton(info)
-	end
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop = CreateFrame("Frame", "BuffDropDown", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop:SetPoint("TOPLEFT", BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 0, -70)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop.title = AddSubText(BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, "TOPLEFT", 20, 15, "Font Option", 15)
+	EasyMenu(core.Fonts.GetAllFonts(), BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, 0 , 0, nil)
+
+	-- Buff Outline Options
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop = CreateFrame("Frame", "BuffDropDown", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop:SetPoint("TOPLEFT", BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 300, -70)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDroptitle = AddSubText(BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, "TOPLEFT", 320, 15, "OutLine Option", 15)
+	EasyMenu(OutLineOptions, BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop, BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop, 0 , 0, nil)
 
 	-- Setup debuff font options menu
 	BetterAuraTrackerPanel.DebuffFontOptionsPanel = CreateFrame( "Frame", "DebuffFontOptionsPanel", BetterAuraTrackerPanel.panel)
@@ -394,11 +397,11 @@ function BetterConfig:CreateMenu()
 	BetterAuraTrackerPanel.DebuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.DebuffFontOptionsPanel, "TOPLEFT", 16, -16, "Debuff Font Options", 30)
 
 
-	-- Set the name for the Category for the Options Panel
+	-- Set addon name in blizz's addon interface
 	BetterAuraTrackerPanel.panel.name = "BetterAuraTracker";
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.parent = BetterAuraTrackerPanel.panel.name;
 	BetterAuraTrackerPanel.DebuffFontOptionsPanel.parent = BetterAuraTrackerPanel.panel.name;
-	-- Add the panels to the Interface Options
+	-- Add the panels to the Interface Options screen
 	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.panel);
 	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.BuffFontOptionsPanel);
 	InterfaceOptions_AddCategory(BetterAuraTrackerPanel.DebuffFontOptionsPanel);
