@@ -1,4 +1,4 @@
-## Interface: 11302
+## Interface: 11303
 ## Title: |cff00ccffBetter Aura Tracker|r
 ## Author: Reetro
 ## Notes: A more customizable Aura frame

@@ -376,7 +376,7 @@ function BetterConfig:CreateMenu()
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.name = "Buff Font Options"
 
 	-- Buff Font Options Title
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options", 30)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options WIP", 30)
 	-- Setup Buff font drop down
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop = CreateFrame("Frame", "BuffDropDown", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop:SetPoint("TOPLEFT", BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 0, -70)
@@ -394,7 +394,7 @@ function BetterConfig:CreateMenu()
 	BetterAuraTrackerPanel.DebuffFontOptionsPanel.name = "Debuff Font Options"
 	
 	-- Debuff Font Options Title
-	BetterAuraTrackerPanel.DebuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.DebuffFontOptionsPanel, "TOPLEFT", 16, -16, "Debuff Font Options", 30)
+	BetterAuraTrackerPanel.DebuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.DebuffFontOptionsPanel, "TOPLEFT", 16, -16, "Debuff Font Options WIP", 30)
 
 
 	-- Set addon name in blizz's addon interface
