@@ -160,7 +160,7 @@ local function OnEvent(self, event, addon)
 	for i=1, BUFF_MAX_DISPLAY do
 		local buff = _G["BuffButton"..i]
     if buff then
-     buff.duration:SetFont(BetterAuraTrackerSettings.BuffFont, BetterAuraTrackerSettings.BuffFontSize)
+     print(BetterAuraTrackerSettings.BuffFont)
 		end
 		if not buff then break end
 	end
@@ -168,7 +168,7 @@ local function OnEvent(self, event, addon)
 	for i=1, BUFF_MAX_DISPLAY do
 		local debuff = _G["DebuffButton"..i]
     if debuff then
-      debuff.duration:SetFont(BetterAuraTrackerSettings.DebuffFont, BetterAuraTrackerSettings.DebuffFontSize)
+      debuff.duration:SetFont("Fonts\\UbuntuMono-B.ttf", 1000)
 		end
 		if not debuff then break end
 	end
@@ -176,6 +176,7 @@ local function OnEvent(self, event, addon)
 	for i=1, NUM_TEMP_ENCHANT_FRAMES do
 		local f = _G["TempEnchant"..i]
     if TempEnchant then
+      print(BetterAuraTrackerSettings.BuffFont)
 			TempEnchant.duration:SetFont(BetterAuraTrackerSettings.BuffFont, BetterAuraTrackerSettings.BuffFontSize)
 		end
 	end

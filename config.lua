@@ -7,6 +7,8 @@ core.BetterConfig = {}; -- adds BetterConfig table to addon namespace
 
 local BetterConfig = core.BetterConfig;
 local UIConfig;
+
+local AceGUI = LibStub("AceGUI-3.0")
  
 --------------------------------------
 -- Saved Settings 
@@ -21,8 +23,8 @@ BetterAuraTrackerSettings = {
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
 	BuffPadding = 0,
-	BuffFont = "Fonts\\FRIZQT__.TTF",
-	BuffFontSize = 11,
+	BuffFont = "Fonts\\UbuntuMono-B.ttf",
+	BuffFontSize = 101,
 	BuffFontOutline = "OUTLINE, MONOCHROME",
 	DebuffPostionX = -200,
 	DebuffPostionY = -100,
@@ -378,16 +380,19 @@ function BetterConfig:CreateMenu()
 	-- Buff Font Options Title
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.title = AddText(BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 16, -16, "Buff Font Options WIP", 30)
 	-- Setup Buff font drop down
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop = CreateFrame("Frame", "BuffDropDown", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop:SetPoint("TOPLEFT", BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 0, -70)
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop.title = AddSubText(BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, "TOPLEFT", 20, 15, "Font Option", 15)
-	EasyMenu(core.Fonts.GetAllFonts(), BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, 0 , 0, nil)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop = AceGUI:Create("Dropdown")
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.frame:SetPoint("CENTER", BetterAuraTrackerPanel.BuffFontOptionsPanel)
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetLabel("Testing Dropdown-Item-Menu")
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetList(core.Fonts.GetAllFonts());
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetCallback("OnValueChanged", function(self)
+		local Value = self:GetValue()
+		BetterAuraTracker.BuffFont = Value
+		StaticPopup_Show ("ReloadUI Box")
+		print(BetterAuraTracker.BuffFont)
+	end)
 
 	-- Buff Outline Options
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop = CreateFrame("Frame", "BuffDropDown", BetterAuraTrackerPanel.BuffFontOptionsPanel, "UIDropDownMenuTemplate")
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop:SetPoint("TOPLEFT", BetterAuraTrackerPanel.BuffFontOptionsPanel, "TOPLEFT", 300, -70)
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDroptitle = AddSubText(BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffDrop, "TOPLEFT", 320, 15, "OutLine Option", 15)
-	EasyMenu(OutLineOptions, BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop, BetterAuraTrackerPanel.BuffFontOptionsPanel.OutDrop, 0 , 0, nil)
+	
 
 	-- Setup debuff font options menu
 	BetterAuraTrackerPanel.DebuffFontOptionsPanel = CreateFrame( "Frame", "DebuffFontOptionsPanel", BetterAuraTrackerPanel.panel)
