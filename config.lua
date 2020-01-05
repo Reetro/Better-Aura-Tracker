@@ -11,6 +11,56 @@ local UIConfig;
 local AceGUI = LibStub("AceGUI-3.0")
  
 --------------------------------------
+-- Setup LibSharedMedia Fonts
+--------------------------------------
+
+local LSM = LibStub('LibSharedMedia-3.0')
+
+if LSM then	
+	LSM:Register("font", "Accidental Presidency", [[Interface\Addons\BetterAuraTracker\fonts\Accidental Presidency.ttf]])
+	LSM:Register("font", "Alba Super", [[Interface\Addons\BetterAuraTracker\fonts\ALBAS___.ttf]])
+	LSM:Register("font", "Arm Wrestler", [[Interface\Addons\BetterAuraTracker\fonts\ArmWrestler.ttf]])
+	LSM:Register("font", "Baar Sophia", [[Interface\Addons\BetterAuraTracker\fonts\BAARS___.TTF]])
+	LSM:Register("font", "Blazed", [[Interface\Addons\BetterAuraTracker\fonts\Blazed.ttf]])
+	LSM:Register("font", "Boris Black Bloxx", [[Interface\Addons\BetterAuraTracker\fonts\BorisBlackBloxx.ttf]])
+	LSM:Register("font", "Boris Black Bloxx Dirty", [[Interface\Addons\BetterAuraTracker\fonts\BorisBlackBloxxDirty.ttf]])
+	LSM:Register("font", "Collegiate", [[Interface\Addons\BetterAuraTracker\fonts\COLLEGIA.ttf]])
+	LSM:Register("font", "Diogenes", [[Interface\Addons\BetterAuraTracker\fonts\DIOGENES.ttf]])
+	LSM:Register("font", "Disko", [[Interface\Addons\BetterAuraTracker\fonts\Disko.ttf]])
+	LSM:Register("font", "Frakturika Spamless", [[Interface\Addons\BetterAuraTracker\fonts\FRAKS___.ttf]])
+	LSM:Register("font", "Impact", [[Interface\Addons\BetterAuraTracker\fonts\impact.ttf]])
+	LSM:Register("font", "Liberation Sans", [[Interface\Addons\BetterAuraTracker\fonts\LiberationSans-Regular.ttf]])
+	LSM:Register("font", "Liberation Serif", [[Interface\Addons\BetterAuraTracker\fonts\LiberationSerif-Regular.ttf]])
+	LSM:Register("font", "Mystic Orbs", [[Interface\Addons\BetterAuraTracker\fonts\MystikOrbs.ttf]])
+	LSM:Register("font", "Pokemon Solid", [[Interface\Addons\BetterAuraTracker\fonts\Pokemon Solid.ttf]])
+	LSM:Register("font", "Rock Show Whiplash", [[Interface\Addons\BetterAuraTracker\fonts\Rock Show Whiplash.ttf]])
+	LSM:Register("font", "SF Diego Sans", [[Interface\Addons\BetterAuraTracker\fonts\SF Diego Sans.ttf]])
+	LSM:Register("font", "Solange", [[Interface\Addons\BetterAuraTracker\fonts\Solange.ttf]])
+	LSM:Register("font", "Star Cine", [[Interface\Addons\BetterAuraTracker\fonts\starcine.ttf]])
+	LSM:Register("font", "Trashco", [[Interface\Addons\BetterAuraTracker\fonts\trashco.ttf]])
+	LSM:Register("font", "Ubuntu Condensed", [[Interface\Addons\BetterAuraTracker\fonts\Ubuntu-C.ttf]])
+	LSM:Register("font", "Ubuntu Light", [[Interface\Addons\BetterAuraTracker\fonts\Ubuntu-L.ttf]])
+	LSM:Register("font", "Waltograph UI", [[Interface\Addons\BetterAuraTracker\fonts\waltographUI.ttf]])
+	LSM:Register("font", "X360", [[Interface\Addons\BetterAuraTracker\fonts\X360.ttf]])
+	LSM:Register("font", "Yanone Kaffeesatz Regular", [[Interface\Addons\BetterAuraTracker\fonts\YanoneKaffeesatz-Regular.ttf]])
+end
+
+local lsmfonts = LSM:List("font")
+
+function GetAllFonts()
+	return lsmfonts
+end
+
+function GetSelectedFont(key)
+	local font = LSM:Fetch("font", key)
+	print(font)
+	print(key)
+	return font	
+end
+
+
+
+--------------------------------------
 -- Saved Settings 
 --------------------------------------
 
@@ -23,8 +73,8 @@ BetterAuraTrackerSettings = {
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
 	BuffPadding = 0,
-	BuffFont = "Fonts\\UbuntuMono-B.ttf",
-	BuffFontSize = 101,
+	BuffFont = "Fonts\\FRIZQT__.TTF",
+	BuffFontSize = 11,
 	BuffFontOutline = "OUTLINE, MONOCHROME",
 	DebuffPostionX = -200,
 	DebuffPostionY = -100,
@@ -58,6 +108,18 @@ StaticPopupDialogs["ReloadUI Box"] = {
 
 local SimpleRound = function(val,valStep)
     return floor(val/valStep)*valStep
+end
+
+function BetterConfig:GetBuffFont()
+	return BetterAuraTrackerSettings.BuffFont
+end
+
+function BetterConfig:GetBuffFontSize()
+	return BetterAuraTrackerSettings.BuffFontSize
+end
+
+function BetterConfig:GetBuffFontOutline()
+	return BetterAuraTrackerSettings.BuffFontOutline
 end
 
 function BetterConfig:GetBuffButtonSize()
@@ -382,13 +444,11 @@ function BetterConfig:CreateMenu()
 	-- Setup Buff font drop down
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop = AceGUI:Create("Dropdown")
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop.frame:SetPoint("CENTER", BetterAuraTrackerPanel.BuffFontOptionsPanel)
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetLabel("Testing Dropdown-Item-Menu")
-	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetList(core.Fonts.GetAllFonts());
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetLabel("Buff Font")
+	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetList(GetAllFonts());
 	BetterAuraTrackerPanel.BuffFontOptionsPanel.BuffFontDrop:SetCallback("OnValueChanged", function(self)
 		local Value = self:GetValue()
-		BetterAuraTracker.BuffFont = Value
-		StaticPopup_Show ("ReloadUI Box")
-		print(BetterAuraTracker.BuffFont)
+		BetterAuraTrackerSettings.BuffFont = GetSelectedFont(Value)
 	end)
 
 	-- Buff Outline Options

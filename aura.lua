@@ -14,7 +14,7 @@ local defaults = {
 	BuffButtonScale = 1,
 	BuffsPerRow = 10,
   BuffPadding = 0,
-  BuffFont = "Fonts\\FRIZQT__.TTF",
+  BuffFont = "Fonts\\MORPHEUS.ttf",
   BuffFontSize = 11,
   BuffFontOutline = "OUTLINE, MONOCHROME",
 	DebuffPostionX = -200,
@@ -149,7 +149,6 @@ function SetDebuffLocation(frame)
    BetterAuraTrackerSettings.DebufframeRelativePoint = relativePoint
  end
 
-
 -----------------------------
 -- Setup Font
 -----------------------------
@@ -160,27 +159,28 @@ local function OnEvent(self, event, addon)
 	for i=1, BUFF_MAX_DISPLAY do
 		local buff = _G["BuffButton"..i]
     if buff then
-     print(BetterAuraTrackerSettings.BuffFont)
+     buff.duration:SetFont(core.BetterConfig.GetBuffFont(), core.BetterConfig.GetBuffFontSize(), core.BetterConfig.GetBuffFontOutline())
+     buff.duration:SetTextColor(1, 1, 1, 1)
+     print(core.BetterConfig.GetBuffFont())
 		end
 		if not buff then break end
 	end
-	
+
 	for i=1, BUFF_MAX_DISPLAY do
 		local debuff = _G["DebuffButton"..i]
     if debuff then
-      debuff.duration:SetFont("Fonts\\UbuntuMono-B.ttf", 1000)
+      debuff.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
 		end
 		if not debuff then break end
 	end
-	
+
 	for i=1, NUM_TEMP_ENCHANT_FRAMES do
 		local f = _G["TempEnchant"..i]
-    if TempEnchant then
-      print(BetterAuraTrackerSettings.BuffFont)
-			TempEnchant.duration:SetFont(BetterAuraTrackerSettings.BuffFont, BetterAuraTrackerSettings.BuffFontSize)
+		if TempEnchant then
+			TempEnchant.duration:SetFont("Fonts\\FRIZQT__.TTF", 11, "OUTLINE, MONOCHROME")
 		end
 	end
-	
+
   fontframe:SetScript("OnEvent", nil)
 end
 
